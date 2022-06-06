@@ -1,74 +1,71 @@
 .container {
-  display: flex;
-  height: 100vh;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
+  padding: 2.5rem 0 5rem;
+  margin-top: 4rem;
 
-  .postListContainer {
-    margin-top: 4rem;
-    display: flex;
-    justify-content: center;
-    width: 60rem;
+  .logo {
+    margin-left: 27.5rem;
+  }
 
-    ul {
+  button {
+    border: none;
+    background-color: var(--black);
+    color: var(--pink);
+    font-weight: 400;
+    font-size: 1.1rem;
+    margin-top: 3rem;
+
+    transition: filter 0.2s;
+
+    &:hover p {
+      filter: brightness(0.9);
+    }
+  }
+}
+
+.posts {
+  width: 100%;
+  margin-top: 4rem;
+
+  a {
+    display: block;
+    width: 100%;
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: bold;
+      color: var(--gray-100);
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1.125rem;
+      color: var(--gray-200);
+      margin-bottom: 1.5rem;
+    }
+
+    > div {
       display: flex;
-      flex-direction: column;
+    }
 
-      li {
-        list-style: none;
-        margin-top: 1rem;
+    span {
+      font-size: 0.875rem;
+      text-transform: capitalize;
+      color: var(--gray-300);
 
-        & + li {
-          margin-top: 3rem;
-        }
+      display: flex;
+      align-items: center;
 
-        .listContainer {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-evenly;
-          height: 8rem;
-
-          h3 {
-            font-size: 1.6rem;
-          }
-
-          p {
-            color: var(--silver-light);
-          }
-
-          .iconContainer {
-            width: 20rem;
-            display: flex;
-            justify-content: flex-start;
-            margin-top: 5px;
-
-            .icon {
-              display: flex;
-              justify-content: space-between;
-              width: 15.5rem;
-
-              p {
-                color: var(--silver-light);
-              }
-            }
-          }
-        }
-
-        button {
-          border: none;
-          background-color: var(--black);
-          color: var(--pink);
-          font-weight: 400;
-          font-size: 1.1rem;
-
-          transition: filter 0.2s;
-
-          &:hover p {
-            filter: brightness(0.9);
-          }
-        }
+      svg {
+        margin-right: 0.5rem;
       }
+
+      &:last-child {
+        margin-left: 1.5rem;
+      }
+    }
+
+    & + a {
+      margin-top: 3rem;
     }
   }
 }

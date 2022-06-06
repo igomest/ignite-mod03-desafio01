@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { RichText } from 'prismic-dom';
 import Header from '../../components/Header';
 
 import { getPrismicClient } from '../../services/prismic';
@@ -14,7 +14,7 @@ interface Post {
   data: {
     title: string;
     banner: {
-      url: string;
+      url?: string;
     };
     author: string;
     content: {
@@ -30,11 +30,27 @@ interface PostProps {
   post: Post;
 }
 
-export default function Post() {
+export default function Post({ post }: PostProps) {
+  const amountWordsOfBody = RichText.asText(
+    post.data.content.reduce((acc, data) => [...acc, ...data.body], [])
+  ).split(' ').length;
+
+  const amountWordsOfHeading = post.data.content.reduce((acc, data) => {
+    if (data.heading) {
+      return [...acc, ...data.heading.split(' ')];
+    }
+
+    return [...acc];
+  }, []).length;
+
+  const readingTime = Math.ceil(
+    (amountWordsOfBody + amountWordsOfHeading) / 200
+  );
+
   return (
     <div className={styles.container}>
       <Head>
-        <title>Post | spacetraveling</title>
+        <title>{post.data.title} | spacetraveling</title>
       </Head>
 
       <Header />
@@ -42,7 +58,7 @@ export default function Post() {
       <div className={styles.banner}>
         <Image
           priority
-          src="/images/Banner.png"
+          src={`${post.data.banner.url}`}
           alt="banner"
           height={500}
           width={1950}
@@ -52,25 +68,23 @@ export default function Post() {
       <main className={styles.contentContainer}>
         <div className={styles.postTitle}>
           <div>
-            <h1>Como utilizar Hooks</h1>
+            <h1>{post.data.title}</h1>
           </div>
 
           <div>
-            <time>15 Mar 2021</time>
-            <div>Joseph Oliveira</div>
-            <time>4 min</time>
+            <time>{post.first_publication_date}</time>
+            <div>{post.data.author}</div>
+            <time>{readingTime} min</time>
           </div>
         </div>
 
-
         <div>
-          <h2>Criando um app CRA do zero</h2>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text ever
-            since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book.{' '}
-          </p>
+          {post.data.content.map(({ heading, body }) => (
+            <>
+              <h2>{heading}</h2>
+              <p dangerouslySetInnerHTML={{ __html: RichText.asHtml(body) }} />
+            </>
+          ))}
         </div>
 
         <div>
@@ -87,16 +101,26 @@ export default function Post() {
   );
 }
 
-// export const getStaticPaths = async () => {
-//   const prismic = getPrismicClient({});
-//   const posts = await prismic.getByType(TODO);
+export const getStaticPaths = async () => {
+  // const prismic = getPrismicClient({});
+  // const posts = await prismic.getByType(TODO);
 
-//   // TODO
-// };
+  // TODO
 
-// export const getStaticProps = async ({params }) => {
-//   const prismic = getPrismicClient({});
-//   const response = await prismic.getByUID(TODO);
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
 
-//   // TODO
-// };
+export const getStaticProps = async ({ params }) => {
+  const prismic = getPrismicClient({});
+  const { slug } = params;
+  const response = await prismic.getByUID('post', String(slug), {});
+
+  return {
+    props: {
+      post: response,
+    },
+  };
+};
