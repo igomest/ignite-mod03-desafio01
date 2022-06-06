@@ -1,12 +1,15 @@
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 
+import { FiCalendar, FiUser } from 'react-icons/fi';
+import Prismic from '@prismicio/client';
+import { RichText } from 'prismic-dom';
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
-import { FiCalendar, FiUser } from 'react-icons/fi'
 
 interface Post {
   uid?: string;
@@ -27,7 +30,7 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home() {
+export default function Home({ results, next_page }: PostPagination) {
   return (
     <div className={styles.container}>
       <Head>
@@ -40,26 +43,32 @@ export default function Home() {
             <Image
               priority
               src="/images/Logo.svg"
-              alt="Logo"
+              alt="logo"
               height={25.63}
               width={238.62}
             />
           </li>
 
           <li>
-            <div className={styles.listContainer}>
-              <h3>Como utilizar Hooks</h3>
-              <p>Pensando em sincronização em vez de ciclos de vida.</p>
-              <div className={styles.iconContainer}>
-                <div className={styles.icon}>
-                  <FiCalendar />
-                  <p>15 Mar 2021</p>
+            {results.map(result => (
+              <Link href={`/post/${result.uid}`}>
+                <a key={result.uid}>
+                  <div className={styles.listContainer}>
+                    <h3>{result.data.title}</h3>
+                    <p>{result.data.subtitle}</p>
+                    <div className={styles.iconContainer}>
+                      <div className={styles.icon}>
+                        <FiCalendar />
+                        <p>{result.first_publication_date}</p>
 
-                  <FiUser />
-                  <p>Klein Moretti</p>
-                </div>
-              </div>
-            </div>
+                        <FiUser />
+                        <p>{result.data.author}</p>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </Link>
+            ))}
           </li>
 
           <li>
@@ -70,12 +79,38 @@ export default function Home() {
         </ul>
       </div>
     </div>
-  )
+  );
 }
 
-// export const getStaticProps = async () => {
-//   // const prismic = getPrismicClient({});
-//   // const postsResponse = await prismic.getByType(TODO);
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient({});
 
-//   // TODO
-// };
+  const postsResponse = await prismic.getByType('post', {
+    pageSize: 20,
+  });
+
+  const posts = postsResponse.results.map(post => {
+    return {
+      slug: post.uid,
+      title: RichText.asText(post.data.title),
+      subtitle: RichText.asText(post.data.subtitle),
+      excerpt:
+        post.data.content.find(content => content.type === 'paragraph')?.text ??
+        '',
+      updatedAt: new Date(post.first_publication_date).toLocaleDateString(
+        'pt-BR',
+        {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+        }
+      ),
+    };
+  });
+
+  console.log(postsResponse.results)
+
+  return {
+    props: { results: posts },
+  };
+};

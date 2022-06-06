@@ -1,80 +1,74 @@
 .container {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  .postListContainer {
+    margin-top: 4rem;
     display: flex;
-    height: 100vh;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    justify-content: center;
+    width: 60rem;
 
+    ul {
+      display: flex;
+      flex-direction: column;
 
-    .postListContainer {
-        margin-top: 4rem;
-        display: flex;
-        justify-content: center;
-        width: 60rem;
+      li {
+        list-style: none;
+        margin-top: 1rem;
 
-        ul {
-
-            display: flex;
-            flex-direction: column;
-
-            li {
-                list-style: none;
-                margin-top: 1rem;
-
-                & + li {
-                    margin-top: 3rem;
-                }
-
-                
-                .listContainer {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-evenly;
-                    height: 8rem;
-                    
-                    h3 {
-                        font-size: 1.6rem;
-                    }
-
-                    p {
-                        color: var(--silver-light);
-                    }
-
-                    .iconContainer {
-                        width: 20rem;
-                        display: flex;
-                        justify-content: flex-start;
-                        margin-top: 5px;
-
-                        .icon {
-                            display: flex;
-                            justify-content: space-between;
-                            width: 15.5rem;
-
-                            p {
-                                color: var(--silver-light);
-                            }
-                        }
-                    }
-                }
-
-                button {
-                    border: none;
-                    background-color: var(--black);
-                    color: var(--pink);
-                    font-weight: 400;
-                    font-size: 1.100rem;
-
-                    transition: filter 0.2s;
-
-                    &:hover p {
-                        filter: brightness(0.9);
-                    }
-                }
-                
-            }
+        & + li {
+          margin-top: 3rem;
         }
 
-        
+        .listContainer {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          height: 8rem;
+
+          h3 {
+            font-size: 1.6rem;
+          }
+
+          p {
+            color: var(--silver-light);
+          }
+
+          .iconContainer {
+            width: 20rem;
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 5px;
+
+            .icon {
+              display: flex;
+              justify-content: space-between;
+              width: 15.5rem;
+
+              p {
+                color: var(--silver-light);
+              }
+            }
+          }
+        }
+
+        button {
+          border: none;
+          background-color: var(--black);
+          color: var(--pink);
+          font-weight: 400;
+          font-size: 1.1rem;
+
+          transition: filter 0.2s;
+
+          &:hover p {
+            filter: brightness(0.9);
+          }
+        }
+      }
     }
+  }
 }

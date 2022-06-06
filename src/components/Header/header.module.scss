@@ -1,1 +1,12 @@
-// TODO
+.container {
+    display: flex;
+    background: var(--black);
+    align-items: center;
+    height: 200px;
+    // border: 1px solid aqua;
+
+    .imageContainer {
+        // border: 1px solid red;
+        margin-left: 25rem;
+    }
+}
