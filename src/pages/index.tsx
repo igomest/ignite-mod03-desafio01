@@ -4,16 +4,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { FiCalendar, FiUser } from 'react-icons/fi';
-import Prismic from '@prismicio/client';
-import { RichText } from 'prismic-dom';
+import { useEffect, useState } from 'react';
+import { ptBR } from 'date-fns/locale';
+import { format } from 'date-fns';
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
-import { useEffect, useState } from 'react';
-import { ptBR } from 'date-fns/locale';
-import { format } from 'date-fns';
-import Header from '../components/Header';
 
 interface Post {
   uid?: string;
@@ -133,6 +130,7 @@ export const getStaticProps: GetStaticProps = async () => {
         next_page: postsResponse.next_page,
         results: postsResponse.results,
       },
+      revalidate: 60 * 5, // 5 minutes
     },
   };
 };

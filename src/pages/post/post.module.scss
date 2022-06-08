@@ -1,19 +1,134 @@
+.bannerContainer {
+  width: 100vw;
+  height: 600px;
+  overflow-y: hidden;
+}
+
 .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  .postContainer {
     display: flex;
-    flex-direction: column;
-    height: 100vh;
     align-items: center;
+    flex-direction: column;
+    width: 790px;
+    height: 100%;
 
-    .banner {
-        width: 100%;
-        position: relative; 
-    }
+    .titleContainer {
+      margin-top: 3rem;
+      height: 13rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
 
-    .contentContainer {
-        border: 1px solid aqua;
-        width: 100vw;
-        height: 100vh;
+      h1 {
+        font-size: 3rem;
+      }
+
+      .icons {
         display: flex;
-        flex-direction: column;
+
+        span {
+          font-size: 0.875rem;
+          text-transform: capitalize;
+          color: var(--silver);
+
+          display: flex;
+          align-items: center;
+
+          svg {
+            margin-right: 0.5rem;
+          }
+
+          & + span {
+            margin-left: 1.5rem;
+          }
+        }
+      }
     }
+    .postContent {
+      font-size: 1.125rem;
+      color: var(--gray-200);
+      text-align: justify;
+      margin-bottom: 4rem;
+
+      h2 {
+        font-size: 2.25rem;
+        font-weight: bold;
+        color: var(--gray-100);
+        margin-bottom: 3rem;
+        margin-top: 4rem;
+      }
+
+      p {
+        line-height: 1.5rem;
+      }
+
+      p + p {
+        margin-top: 1.5rem;
+      }
+
+      a {
+        color: var(--pink-300);
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      ul {
+        margin: 1rem 2rem;
+
+        li + li {
+          margin-top: 1rem;
+        }
+      }
+    }
+  }
+    
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    height: 4rem;
+    width: 50rem;
+
+    .previousPost {
+      width: 20rem;
+      height: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      
+      p {
+        font-size: 1.1rem;
+      }
+
+      a {
+         font-size: 0.98rem;
+         color: var(--pink);
+      }
+    }
+
+    .nextPost {
+      width: 20rem;
+      height: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-end;
+      
+      p {
+        font-size: 1.1rem;
+      }
+
+      a {
+         font-size: 0.98rem;
+         color: var(--pink);
+      }
+    }
+  }
 }
